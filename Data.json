@@ -1,0 +1,16 @@
+{
+	"accident" : {
+		
+		"description": "",
+		"dateheure" : 0
+	},
+
+	"location" : {
+
+		"name":"test",
+
+		"longitude": 3.018337,
+		
+		"latitude":36.743646	
+	}
+}
