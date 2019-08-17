@@ -1,0 +1,29 @@
+{
+  "name": "geniusbyte-backend",
+  "version": "1.0.0",
+  "description": "backend notification-sys school-project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alaa1908/geniusByte.git"
+  },
+  "keywords": [
+    "notif",
+    "backend"
+  ],
+  "author": "geniusByte",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alaa1908/back-end-/issues"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
