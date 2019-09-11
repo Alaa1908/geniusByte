@@ -18,7 +18,7 @@ var fs = require('fs');
 // };
   
 // // Initialize Firebase
-// firebase.initializeApp(firebaseConfig);
+// firebase.initializeApp(firebaseCo nfig);
 
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,14 +35,14 @@ app.post('/accident',function(req,res) {
     console.log(req.body)
     fs.exists('./accidents.json', function(exists){
         if(exists){
-            console.log("yes file exists");
+            //console.log("yes file exists");
             fs.readFile('./accidents.json', function readFileCallback(err, data){
                 if (err){
                     console.log(err);
                 } else {
                     listaccident = JSON.parse(data); 
 
-                    console.log(listaccident) 
+                    //console.log(listaccident) 
 
                     accident = { 
 
@@ -68,7 +68,7 @@ app.post('/accident',function(req,res) {
                             console.log("An error occured while writing JSON Object to File.");
                             return console.log(err);
                         }
-                        console.log("JSON file has been saved.");
+                        //console.log("JSON file has been saved.");
 
                         longpoll.publish("/poll_web", JSON.stringify({accident: accident, location:location}));  
                     
@@ -80,7 +80,7 @@ app.post('/accident',function(req,res) {
                 }
             });
         } else {
-            console.log("file not exists") 
+            //console.log("file not exists") 
 
             accident = { 
 
@@ -100,7 +100,7 @@ app.post('/accident',function(req,res) {
 
             listaccident.accidents.push ({accident: accident, location:location})
 
-            console.log(listaccident) 
+            //console.log(listaccident) 
 
             var content = JSON.stringify(listaccident);
             fs.writeFile('./accidents.json' , content , 'utf8', function (err) {
@@ -108,7 +108,7 @@ app.post('/accident',function(req,res) {
                 console.log("An error occured while writing JSON Object to File.");
                 return console.log(err);
             }
-            console.log("JSON file has been saved.");
+            //console.log("JSON file has been saved.");
 
             longpoll.publish("/poll_web", JSON.stringify({accident: accident, location:location}));       
 
@@ -197,7 +197,7 @@ longpoll.create("/poll_mobile", function (req,res,next) {
     next();
 });
 
-app.listen(8080, function() {
+app.listen(process.env.PORT || 8080, function() {
     console.log("Listening on port 8080");
 });
 
