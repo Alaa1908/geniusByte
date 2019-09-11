@@ -4,8 +4,8 @@ var app            =        express();
 var longpoll = require("express-longpoll")(app)
 var longpollWithDebug = require("express-longpoll")(app, { DEBUG: true });
 var fs = require('fs');
-var firebase = require("firebase");
 
+//var firebase = require("firebase");
 // // TODO: Replace the following with your app's Firebase project configuration
 // var firebaseConfig = {
 //     apiKey: "AIzaSyAbQiiBVVVivgl_hbbefHgw-QDS8Q-q3zo",
