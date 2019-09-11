@@ -4,6 +4,21 @@ var app            =        express();
 var longpoll = require("express-longpoll")(app)
 var longpollWithDebug = require("express-longpoll")(app, { DEBUG: true });
 var fs = require('fs');
+var firebase = require("firebase");
+
+// // TODO: Replace the following with your app's Firebase project configuration
+// var firebaseConfig = {
+//     apiKey: "AIzaSyAbQiiBVVVivgl_hbbefHgw-QDS8Q-q3zo",
+//     authDomain: "geniusbyte-e32ea.firebaseapp.com",
+//     databaseURL: "https://geniusbyte-e32ea.firebaseio.com",
+//     projectId: "geniusbyte-e32ea",
+//     storageBucket: "",
+//     messagingSenderId: "336609968803",
+//     appId: "1:336609968803:web:b3060393e6167705e97516"
+// };
+  
+// // Initialize Firebase
+// firebase.initializeApp(firebaseConfig);
 
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,6 +29,7 @@ var listaccident = {
 };
 
 var timeConnection
+var lastconnection
 
 app.post('/accident',function(req,res) {
     console.log(req.body)
@@ -55,6 +71,11 @@ app.post('/accident',function(req,res) {
                         console.log("JSON file has been saved.");
 
                         longpoll.publish("/poll", JSON.stringify({accident: accident, location:location}));  
+                    
+                        lastconnection =  Date.now()/1000;
+
+                        longpoll.publish("/poll_mobile", JSON.stringify({accident: accident, location:location})); 
+
                     });
                 }
             });
@@ -90,6 +111,10 @@ app.post('/accident',function(req,res) {
             console.log("JSON file has been saved.");
 
             longpoll.publish("/poll", JSON.stringify({accident: accident, location:location}));       
+
+            lastconnection = Date.now()/1000;
+
+            longpoll.publish("/poll_mobile", JSON.stringify({accident: accident, location:location})); 
             });
         }
     });
@@ -146,7 +171,7 @@ longpoll.create("/poll", function (req,res,next) {
                     for (let i = 0; i < listaccident.accidents.length; i++) {
                         //console.log(listaccident.accidents[i].accident.dateheure)
                         //console.log(timeConnection)
-                        if (listaccident.accidents[i].accident.dateheure < timeConnection){
+                        if (listaccident.accidents[i].accident.dateheure < timeConnection && listaccident.accidents[i].accident.dateheure > lastconnection){
                             listPastAccident.accidents.push(listaccident.accidents[i])
                             //console.log(listPastAccident)
                         }    
@@ -154,7 +179,10 @@ longpoll.create("/poll", function (req,res,next) {
 
                     var content = JSON.stringify(listPastAccident);
 
-                    //longpoll.publish("/poll", content);  
+                    if (listPastAccident.accidents.length > 0)  {
+                        longpoll.publish("/poll", content); 
+                        lastconnection = Date.now()/1000;
+                    }        
                 }
             });
         }else {
@@ -162,6 +190,10 @@ longpoll.create("/poll", function (req,res,next) {
         }
     });
     
+    next();
+});
+
+longpoll.create("/poll_mobile", function (req,res,next) {
     next();
 });
 
