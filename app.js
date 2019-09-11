@@ -70,7 +70,7 @@ app.post('/accident',function(req,res) {
                         }
                         console.log("JSON file has been saved.");
 
-                        longpoll.publish("/poll", JSON.stringify({accident: accident, location:location}));  
+                        longpoll.publish("/poll_web", JSON.stringify({accident: accident, location:location}));  
                     
                         lastconnection =  Date.now()/1000;
 
@@ -110,7 +110,7 @@ app.post('/accident',function(req,res) {
             }
             console.log("JSON file has been saved.");
 
-            longpoll.publish("/poll", JSON.stringify({accident: accident, location:location}));       
+            longpoll.publish("/poll_web", JSON.stringify({accident: accident, location:location}));       
 
             lastconnection = Date.now()/1000;
 
@@ -147,7 +147,7 @@ app.post('/accident',function(req,res) {
 
 // console.log(files)
 
-longpoll.create("/poll", function (req,res,next) {
+longpoll.create("/poll_web", function (req,res,next) {
 
     timeConnection = Date.now()/1000
     // need time of last connexion fromclient
